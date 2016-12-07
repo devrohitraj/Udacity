@@ -1,0 +1,190 @@
+[
+{
+  "name": "Watterson",
+  "created": {
+    "changeset": "177010",
+    "user": "davidearl",
+    "version": "2",
+    "uid": "3582",
+    "timestamp": "2008-12-06T18:16:42Z"
+  },
+  "pos": [
+    "29.9891094",
+    "-97.3877712"
+  ],
+  "ele": "153",
+  "place": "hamlet",
+  "type": "node",
+  "id": "151321672"
+},
+{
+  "name": "Kings Village",
+  "created": {
+    "changeset": "177010",
+    "user": "davidearl",
+    "version": "2",
+    "uid": "3582",
+    "timestamp": "2008-12-06T18:16:44Z"
+  },
+  "pos": [
+    "30.4357579",
+    "-97.6894508"
+  ],
+  "ele": "253",
+  "place": "hamlet",
+  "type": "node",
+  "id": "151322904"
+},
+{
+  "name": "Tanglewood Forest",
+  "created": {
+    "changeset": "15652684",
+    "user": "Gilles Muller",
+    "version": "3",
+    "uid": "1326818",
+    "timestamp": "2013-04-08T10:27:19Z"
+  },
+  "pos": [
+    "30.1746548",
+    "-97.8391726"
+  ],
+  "ele": "226",
+  "place": "neighbourhood",
+  "type": "node",
+  "id": "151324257"
+},
+{
+  "census": {
+    "population": "7591;2006"
+  },
+  "name": "Bastrop",
+  "created": {
+    "changeset": "177010",
+    "user": "davidearl",
+    "version": "2",
+    "uid": "3582",
+    "timestamp": "2008-12-06T18:16:49Z"
+  },
+  "pos": [
+    "30.1104947",
+    "-97.3152701"
+  ],
+  "ele": "112",
+  "place": "village",
+  "type": "node",
+  "id": "151324760",
+  "population": "7591"
+},
+{
+  "census": {
+    "population": "2657;2006"
+  },
+  "name": "Manor",
+  "created": {
+    "changeset": "177010",
+    "user": "davidearl",
+    "version": "2",
+    "uid": "3582",
+    "timestamp": "2008-12-06T18:16:55Z"
+  },
+  "pos": [
+    "30.3407629",
+    "-97.5569456"
+  ],
+  "ele": "162",
+  "place": "village",
+  "type": "node",
+  "id": "151327976",
+  "population": "2657"
+},
+{
+  "name": "Decker",
+  "created": {
+    "changeset": "177010",
+    "user": "davidearl",
+    "version": "2",
+    "uid": "3582",
+    "timestamp": "2008-12-06T18:16:56Z"
+  },
+  "pos": [
+    "30.306597",
+    "-97.6177801"
+  ],
+  "ele": "174",
+  "place": "hamlet",
+  "type": "node",
+  "id": "151328738"
+},
+{
+  "name": "Mount Gainor",
+  "created": {
+    "changeset": "177010",
+    "user": "davidearl",
+    "version": "2",
+    "uid": "3582",
+    "timestamp": "2008-12-06T18:17:01Z"
+  },
+  "pos": [
+    "30.1438191",
+    "-98.135012"
+  ],
+  "ele": "350",
+  "place": "hamlet",
+  "type": "node",
+  "id": "151330155"
+},
+{
+  "name": "Littig",
+  "created": {
+    "changeset": "9699430",
+    "user": "moosejaw",
+    "version": "3",
+    "uid": "332709",
+    "timestamp": "2011-10-30T23:48:53Z"
+  },
+  "pos": [
+    "30.3204058",
+    "-97.4478261"
+  ],
+  "ele": "138",
+  "place": "hamlet",
+  "type": "node",
+  "id": "151331518"
+},
+{
+  "name": "Coupland",
+  "created": {
+    "changeset": "177010",
+    "user": "davidearl",
+    "version": "2",
+    "uid": "3582",
+    "timestamp": "2008-12-06T18:17:10Z"
+  },
+  "pos": [
+    "30.4599264",
+    "-97.3886085"
+  ],
+  "ele": "156",
+  "place": "hamlet",
+  "type": "node",
+  "id": "151332903"
+},
+{
+  "name": "Mustang Ridge",
+  "created": {
+    "changeset": "177010",
+    "user": "davidearl",
+    "version": "2",
+    "uid": "3582",
+    "timestamp": "2008-12-06T18:17:27Z"
+  },
+  "pos": [
+    "30.0568828",
+    "-97.6911124"
+  ],
+  "ele": "190",
+  "place": "hamlet",
+  "type": "node",
+  "id": "151336027"
+},
+{}]
