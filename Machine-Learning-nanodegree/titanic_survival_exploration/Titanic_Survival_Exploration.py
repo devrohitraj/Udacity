@@ -13,7 +13,7 @@
 # Run the code cell below to load our data and display the first few entries (passengers) for examination using the `.head()` function.
 # > **Tip:** You can run a code cell by clicking on the cell and using the keyboard shortcut **Shift + Enter** or **Shift + Return**. Alternatively, a code cell can be executed using the **Play** button in the hotbar after selecting it. Markdown cells (text cells like this one) can be edited by double-clicking, and saved using these same shortcuts. [Markdown](http://daringfireball.net/projects/markdown/syntax) allows you to write easy-to-read plain text that can be converted to HTML.
 
-# In[1]:
+# In[3]:
 
 import numpy as np
 import pandas as pd
@@ -47,7 +47,7 @@ display(full_data.head())
 # Since we're interested in the outcome of survival for each passenger or crew member, we can remove the **Survived** feature from this dataset and store it as its own separate variable `outcomes`. We will use these outcomes as our prediction targets.  
 # Run the code cell below to remove **Survived** as a feature of the dataset and store it in `outcomes`.
 
-# In[2]:
+# In[4]:
 
 # Store the 'Survived' feature in a new variable and remove it from the dataset
 outcomes = full_data['Survived']
@@ -63,7 +63,7 @@ display(data.head())
 # 
 # **Think:** *Out of the first five passengers, if we predict that all of them survived, what would you expect the accuracy of our predictions to be?*
 
-# In[3]:
+# In[5]:
 
 def accuracy_score(truth, pred):
     """ Returns accuracy score for input truth and predictions. """
@@ -89,7 +89,7 @@ print accuracy_score(outcomes[:5], predictions)
 # If we were asked to make a prediction about any passenger aboard the RMS Titanic whom we knew nothing about, then the best prediction we could make would be that they did not survive. This is because we can assume that a majority of the passengers (more than 50%) did not survive the ship sinking.  
 # The `predictions_0` function below will always predict that a passenger did not survive.
 
-# In[5]:
+# In[7]:
 
 def predictions_0(data):
     """ Model with no features. Always predicts a passenger did not survive. """
@@ -111,7 +111,7 @@ predictions = predictions_0(data)
 # *Using the RMS Titanic data, how accurate would a prediction be that none of the passengers survived?*  
 # **Hint:** Run the code cell below to see the accuracy of this prediction.
 
-# In[6]:
+# In[8]:
 
 print accuracy_score(outcomes, predictions)
 
@@ -122,7 +122,7 @@ print accuracy_score(outcomes, predictions)
 # Let's take a look at whether the feature **Sex** has any indication of survival rates among passengers using the `survival_stats` function. This function is defined in the `titanic_visualizations.py` Python script included with this project. The first two parameters passed to the function are the RMS Titanic data and passenger survival outcomes, respectively. The third parameter indicates which feature we want to plot survival statistics across.  
 # Run the code cell below to plot the survival outcomes of passengers based on their sex.
 
-# In[7]:
+# In[9]:
 
 survival_stats(data, outcomes, 'Sex')
 
@@ -131,7 +131,7 @@ survival_stats(data, outcomes, 'Sex')
 # Fill in the missing code below so that the function will make this prediction.  
 # **Hint:** You can access the values of each feature for a passenger like a dictionary. For example, `passenger['Sex']` is the sex of the passenger.
 
-# In[135]:
+# In[10]:
 
 def predictions_1(data):
     """ Model with one feature: 
@@ -158,7 +158,7 @@ predictions = predictions_1(data)
 # *How accurate would a prediction be that all female passengers survived and the remaining passengers did not survive?*  
 # **Hint:** Run the code cell below to see the accuracy of this prediction.
 
-# In[12]:
+# In[11]:
 
 print accuracy_score(outcomes, predictions)
 
@@ -169,7 +169,7 @@ print accuracy_score(outcomes, predictions)
 # Using just the **Sex** feature for each passenger, we are able to increase the accuracy of our predictions by a significant margin. Now, let's consider using an additional feature to see if we can further improve our predictions. For example, consider all of the male passengers aboard the RMS Titanic: Can we find a subset of those passengers that had a higher rate of survival? Let's start by looking at the **Age** of each male, by again using the `survival_stats` function. This time, we'll use a fourth parameter to filter out the data so that only passengers with the **Sex** 'male' will be included.  
 # Run the code cell below to plot the survival outcomes of male passengers based on their age.
 
-# In[13]:
+# In[12]:
 
 survival_stats(data, outcomes, 'Age', ["Sex == 'male'"])
 
@@ -178,7 +178,7 @@ survival_stats(data, outcomes, 'Age', ["Sex == 'male'"])
 # Fill in the missing code below so that the function will make this prediction.  
 # **Hint:** You can start your implementation of this function using the prediction code you wrote earlier from `predictions_1`.
 
-# In[72]:
+# In[13]:
 
 def predictions_2(data):
     """ Model with two features: 
@@ -210,7 +210,7 @@ predictions = predictions_2(data)
 # *How accurate would a prediction be that all female passengers and all male passengers younger than 10 survived?*  
 # **Hint:** Run the code cell below to see the accuracy of this prediction.
 
-# In[73]:
+# In[14]:
 
 print accuracy_score(outcomes, predictions)
 
@@ -224,16 +224,16 @@ print accuracy_score(outcomes, predictions)
 # Use the `survival_stats` function below to to examine various survival statistics.  
 # **Hint:** To use mulitple filter conditions, put each condition in the list passed as the last argument. Example: `["Sex == 'male'", "Age < 18"]`
 
-# In[132]:
+# In[60]:
 
-survival_stats(data, outcomes, 'Pclass', ["Sex == 'female'", "Age > 40"])
+survival_stats(data, outcomes, 'Pclass', ["Sex == 'male'", "Age > 22", "Age < 38"])
 
 
 # After exploring the survival statistics visualization, fill in the missing code below so that the function will make your prediction.  
 # Make sure to keep track of the various features and conditions you tried before arriving at your final prediction model.  
 # **Hint:** You can start your implementation of this function using the prediction code you wrote earlier from `predictions_2`.
 
-# In[133]:
+# In[72]:
 
 def predictions_3(data):
     """ Model with multiple features. Makes a prediction with an accuracy of at least 80%. """
@@ -251,6 +251,10 @@ def predictions_3(data):
         elif passenger['Sex'] == 'male' and passenger['Age'] < 10:
             #print passenger['Age']
             predictions.append(1)
+            
+        elif passenger['Sex'] == 'male' and passenger['Pclass'] == 1 and passenger['Age'] > 22 and passenger['Age'] < 37:
+            #print passenger['Age']
+            predictions.append(1)
                 
         else:
             predictions.append(0)
@@ -266,13 +270,17 @@ predictions = predictions_3(data)
 # *Describe the steps you took to implement the final prediction model so that it got an accuracy of at least 80%. What features did you look at? Were certain features more informative than others? Which conditions did you use to split the survival outcomes in the data? How accurate are your predictions?*  
 # **Hint:** Run the code cell below to see the accuracy of your predictions.
 
-# In[134]:
+# In[73]:
 
 print accuracy_score(outcomes, predictions)
 
 
 # **Answer**: *80.13%. : Went through various features like Pclass, SibSp, Parch, but in my analysis SibSp and Parch were not a good feature to predict servival. Pclass was giving little enhancement to over accuracy, that surpasses 80%. Going through other features to see if i can enhance the accuracy.
-# Added one more condition as If Passenger is female and her age is greater than 40 and her Passenger Class is 3 than in my analysis majority of people didn't survive.*
+# 
+# Added one more condition as If Passenger is female and her age is greater than 40 and her Passenger Class is 3 than in my analysis majority of people didn't survive.
+# 
+# One more discovry just now is, if Passenger is male and age between 22 and 37 and Pclass is 1 than survival changes is better.
+# *
 
 # # Conclusion
 # 
