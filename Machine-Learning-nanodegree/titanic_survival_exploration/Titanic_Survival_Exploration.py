@@ -131,7 +131,7 @@ survival_stats(data, outcomes, 'Sex')
 # Fill in the missing code below so that the function will make this prediction.  
 # **Hint:** You can access the values of each feature for a passenger like a dictionary. For example, `passenger['Sex']` is the sex of the passenger.
 
-# In[16]:
+# In[135]:
 
 def predictions_1(data):
     """ Model with one feature: 
@@ -163,7 +163,7 @@ predictions = predictions_1(data)
 print accuracy_score(outcomes, predictions)
 
 
-# **Answer**: *78.68%*
+# **Answer**: *Prediction accuracy will be around 78.68%*
 
 # ***
 # Using just the **Sex** feature for each passenger, we are able to increase the accuracy of our predictions by a significant margin. Now, let's consider using an additional feature to see if we can further improve our predictions. For example, consider all of the male passengers aboard the RMS Titanic: Can we find a subset of those passengers that had a higher rate of survival? Let's start by looking at the **Age** of each male, by again using the `survival_stats` function. This time, we'll use a fourth parameter to filter out the data so that only passengers with the **Sex** 'male' will be included.  
@@ -215,7 +215,7 @@ predictions = predictions_2(data)
 print accuracy_score(outcomes, predictions)
 
 
-# **Answer**: *79.35%*
+# **Answer**: *79.35%, Little enhancement over previous prediction*
 
 # ***
 # Adding the feature **Age** as a condition in conjunction with **Sex** improves the accuracy by a small margin more than with simply using the feature **Sex** alone. Now it's your turn: Find a series of features and conditions to split the data on to obtain an outcome prediction accuracy of at least 80%. This may require multiple features and multiple levels of conditional statements to succeed. You can use the same feature multiple times with different conditions.   
@@ -243,17 +243,6 @@ def predictions_3(data):
         
         # Remove the 'pass' statement below 
         # and write your prediction conditions here
-        '''if (passenger['Sex'] == 'female' and passenger['SibSp'] == 5) or (passenger['Sex'] == 'female' and passenger['SibSp'] == 8):
-            predictions.append(0)
-        elif (passenger['Sex'] == 'female' and passenger['Parch'] == 4) or (passenger['Sex'] == 'female' and passenger['Parch'] == 4):
-            predictions.append(0) 
-            
-        elif passenger['Sex'] == 'male' and passenger['Age'] >= 10:
-            #print passenger['Age']
-            predictions.append(0)
-                
-        else:
-            predictions.append(1)'''
         
         if passenger['Sex'] == 'female' and passenger['Age'] > 40 and passenger['Pclass'] == 3:
             predictions.append(0)
@@ -282,7 +271,8 @@ predictions = predictions_3(data)
 print accuracy_score(outcomes, predictions)
 
 
-# **Answer**: *80.13%.*
+# **Answer**: *80.13%. : Went through various features like Pclass, SibSp, Parch, but in my analysis SibSp and Parch were not a good feature to predict servival. Pclass was giving little enhancement to over accuracy, that surpasses 80%. Going through other features to see if i can enhance the accuracy.
+# Added one more condition as If Passenger is female and her age is greater than 40 and her Passenger Class is 3 than in my analysis majority of people didn't survive.*
 
 # # Conclusion
 # 
