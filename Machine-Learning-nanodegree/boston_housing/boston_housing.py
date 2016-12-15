@@ -22,7 +22,7 @@
 # 
 # Run the code cell below to load the Boston housing dataset, along with a few of the necessary Python libraries required for this project. You will know the dataset loaded successfully if the size of the dataset is reported.
 
-# In[26]:
+# In[1]:
 
 # Import libraries necessary for this project
 import numpy as np
@@ -54,7 +54,7 @@ print "Boston housing dataset has {} data points with {} variables each.".format
 # - Calculate the minimum, maximum, mean, median, and standard deviation of `'MDEV'`, which is stored in `prices`.
 #   - Store each calculation in their respective variable.
 
-# In[19]:
+# In[2]:
 
 import numpy as np
 # TODO: Minimum price of the data
@@ -90,7 +90,19 @@ print "Standard deviation of prices: ${:,.2f}".format(std_price)
 # _Using your intuition, for each of the three features above, do you think that an increase in the value of that feature would lead to an **increase** in the value of `'MDEV'` or a **decrease** in the value of `'MDEV'`? Justify your answer for each._  
 # **Hint:** Would you expect a home that has an `'RM'` value of 6 be worth more or less than a home that has an `'RM'` value of 7?
 
-# **Answer: Less**
+# **Answer: As per my intuition: RM-> increase in the value of RM will lead to an increase in MDEV as more number of rooms in a house will increase the price.
+# LSTAT-> Lessar value of LSTAT will increse prices of houses as Top net-worth homeowners will cause in increase in Prices..
+# PTRATIO-> AS ratio of student to teacher decreases, MDEV should increase.**
+
+# In[22]:
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+for var in ['RM', 'LSTAT', 'PTRATIO']:
+    sns.regplot(data[var], prices)
+    plt.show()
+
 
 # ----
 # 
@@ -106,7 +118,7 @@ print "Standard deviation of prices: ${:,.2f}".format(std_price)
 # - Use `r2_score` from `sklearn.metrics` to perform a performance calculation between `y_true` and `y_predict`.
 # - Assign the performance score to the `score` variable.
 
-# In[34]:
+# In[3]:
 
 # TODO: Import 'r2_score'
 
@@ -136,7 +148,7 @@ def performance_metric(y_true, y_predict):
 # 
 # Run the code cell below to use the `performance_metric` function and calculate this model's coefficient of determination.
 
-# In[35]:
+# In[4]:
 
 # Calculate the performance of this model
 score = performance_metric([3, -0.5, 2, 7, 4.2], [2.5, 0.0, 2.1, 7.8, 5.3])
@@ -154,7 +166,7 @@ print "Model has a coefficient of determination, R^2, of {:.3f}.".format(score)
 #   - Set the `random_state` for `train_test_split` to a value of your choice. This ensures results are consistent.
 # - Assign the train and testing splits to `X_train`, `X_test`, `y_train`, and `y_test`.
 
-# In[37]:
+# In[6]:
 
 # TODO: Import 'train_test_split'
 
@@ -171,7 +183,7 @@ print "Training and testing split was successful."
 # *What is the benefit to splitting a dataset into some ratio of training and testing subsets for a learning algorithm?*  
 # **Hint:** What could go wrong with not having a way to test your model?
 
-# **Answer: To avoid overfitting**
+# **Answer: To avoid overfitting and to reduce variance**
 
 # ----
 # 
@@ -183,7 +195,7 @@ print "Training and testing split was successful."
 # 
 # Run the code cell below and use these graphs to answer the following question.
 
-# In[38]:
+# In[7]:
 
 # Produce learning curves for varying training set sizes and maximum depths
 vs.ModelLearning(features, prices)
@@ -193,14 +205,14 @@ vs.ModelLearning(features, prices)
 # *Choose one of the graphs above and state the maximum depth for the model. What happens to the score of the training curve as more training points are added? What about the testing curve? Would having more training points benefit the model?*  
 # **Hint:** Are the learning curves converging to particular scores?
 
-# **Answer: max_depth = 3, Score of training curve decreases little as more training points are added towards testing curve and at last converge. Yes, its benefits as it makes the curve more consistent**
+# **Answer: max_depth = 3, Score of training curve decreases little as more training points are added towards testing curve and at last converge. No, Adding more dataset will not help as seeing in the learning curve, after 200 training points, score is  nearly consistent. It will be better to do feature selection other than adding more data.**
 
 # ### Complexity Curves
 # The following code cell produces a graph for a decision tree model that has been trained and validated on the training data using different maximum depths. The graph produces two complexity curves — one for training and one for validation. Similar to the **learning curves**, the shaded regions of both the complexity curves denote the uncertainty in those curves, and the model is scored on both the training and validation sets using the `performance_metric` function.  
 # 
 # Run the code cell below and use this graph to answer the following two questions.
 
-# In[39]:
+# In[8]:
 
 vs.ModelComplexity(X_train, y_train)
 
@@ -209,12 +221,12 @@ vs.ModelComplexity(X_train, y_train)
 # *When the model is trained with a maximum depth of 1, does the model suffer from high bias or from high variance? How about when the model is trained with a maximum depth of 10? What visual cues in the graph justify your conclusions?*  
 # **Hint:** How do you know when a model is suffering from high bias or high variance?
 
-# **Answer: When trained the model with max_depth of 1, model suffer from high bias and low varience. Max_dept of 10 gives little low bias but high varience. In the starting of graph, Training_curve and validation_curve is attached to each other i.e low varience but very far from score of 1, so high bias and as max_depth increases seperation between curve increases i.e high varience, but the curves is closer to score of 1 i.e low bias**
+# **Answer: When trained the model with max_depth of 1, model suffer from high bias and low variance. Max_dept of 10 gives little low bias but high variance. In the starting of graph, Training_curve and validation_curve is attached to each other i.e low variance but very far from score of 1, so high bias and as max_depth increases seperation between curve increases i.e high variance, but the curves is closer to score of 1 i.e low bias**
 
 # ### Question 6 - Best-Guess Optimal Model
 # *Which maximum depth do you think results in a model that best generalizes to unseen data? What intuition lead you to this answer?*
 
-# **Answer: max_depth of 3 gives more accurate data as because after that bias and varience increases drastically. Before it varince was very high.**
+# **Answer: max_depth of 3 gives more accurate data as because after that bias and varience increases drastically. Before it variance was very high.**
 
 # -----
 # 
@@ -224,12 +236,20 @@ vs.ModelComplexity(X_train, y_train)
 # ### Question 7 - Grid Search
 # *What is the grid search technique and how it can be applied to optimize a learning algorithm?*
 
-# **Answer: Grid search is used for parameter tuning that will  build and evaluate a model for each combination specified in that grid. It defines how far the influence of a single training examples reaches like gamma in SVM. Cross-validation is used for measuring performance.**
+# **Answer: Grid search is used for parameter tuning that will  build and evaluate a model for each combination specified in that grid. It defines how far the influence of a single training examples reaches like gamma in SVM. Cross-validation is used for increasing efficiency on particular data.**
 
 # ### Question 8 - Cross-Validation
 # *What is the k-fold cross-validation training technique and how is it performed on a learning algorithm?*
 
-# **Answer: As dividing the data into three parts is reduced the data sets that is used to train the model, In this technique, data is divided into k-parts and k-1 part is used for training the data and remaining is used for validating the model. It do not waste much data.**
+# **Answer: As dividing the data into two parts and using one part for training and other part for testing decreases efficiency as we are training on other data and testing on some another. In this technique, data is divided into k-parts and k-1 part is used for training the data and remaining is used for validating the model. It will repeat it for k times. Averages its estimation. It better as it uses all of its data.
+# 
+# Clarification:
+# 1) The main benefit of using cross-validation along with grid search is to protect against overfitting for every sets of model created by GridSearch and select the one that did best.
+# 
+# 2) cross-validation is a good alternate to single validation set as single-validation set can get a good score but yet can fail to predict unseen data. But cross-validation will work good on unseen data as it does not waste too much data and generalise well.
+# Randomized Search is good alternate for GridSearchCV as recommanded by you. As it is not evaluating every parameters passed to it. It may lose little accuracy but performance and running time will be better.
+# 
+# 3)k-fold Cross-validation does not overfit as we split data in k-part and k-1 part is used for training and remaining part for testing. Repeat it for k-times and averages the score. So, it is good for unseen data.**
 
 # ### Implementation: Fitting a Model
 # Your final implementation requires that you bring everything together and train a model using the **decision tree algorithm**. To ensure that you are producing an optimized model, you will train the model using the grid search technique to optimize the `'max_depth'` parameter for the decision tree. The `'max_depth'` parameter can be thought of as how many questions the decision tree algorithm is allowed to ask about the data before making a prediction. Decision trees are part of a class of algorithms called *supervised learning algorithms*.
@@ -245,7 +265,7 @@ vs.ModelComplexity(X_train, y_train)
 #   - Pass the variables `'regressor'`, `'params'`, `'scoring_fnc'`, and `'cv_sets'` as parameters to the object. 
 #   - Assign the `GridSearchCV` object to the `'grid'` variable.
 
-# In[64]:
+# In[17]:
 
 # TODO: Import 'make_scorer', 'DecisionTreeRegressor', and 'GridSearchCV'
 
@@ -261,8 +281,7 @@ def fit_model(X, y):
     regressor = DecisionTreeRegressor()
 
     # TODO: Create a dictionary for the parameter 'max_depth' with a range from 1 to 10
-    lst = [1,2,3,4,5,6,7,8,9,10]
-    params = {'max_depth' : lst}
+    params = {'max_depth' : range(1, 11)}
 
     # TODO: Transform 'performance_metric' into a scoring function using 'make_scorer' 
     from sklearn.metrics import make_scorer
@@ -270,7 +289,9 @@ def fit_model(X, y):
 
     # TODO: Create the grid search object
     from sklearn.grid_search import GridSearchCV
-    grid = GridSearchCV(regressor, params, scoring_fnc, cv_sets)
+    
+    # Updated cv_sets and scoring parameter
+    grid = GridSearchCV(regressor, params, scoring = scoring_fnc, cv = cv_sets)
 
     # Fit the grid search object to the data to compute the optimal model
     grid = grid.fit(X, y)
@@ -287,7 +308,7 @@ def fit_model(X, y):
 # 
 # Run the code block below to fit the decision tree regressor to the training data and produce an optimal model.
 
-# In[65]:
+# In[16]:
 
 # Fit the training data to the model using grid search
 reg = fit_model(X_train, y_train)
@@ -311,7 +332,12 @@ print "Parameter 'max_depth' is {} for the optimal model.".format(reg.get_params
 # 
 # Run the code block below to have your optimized model make predictions for each client's home.
 
-# In[66]:
+# In[21]:
+
+features.describe()
+
+
+# In[18]:
 
 # Produce a matrix for client data
 client_data = [[5, 34, 15], # Client 1
@@ -323,12 +349,16 @@ for i, price in enumerate(reg.predict(client_data)):
     print "Predicted selling price for Client {}'s home: ${:,.2f}".format(i+1, price)
 
 
-# **Answer: I will recommand the same predicted price to the customers. These price seems reasonable according to the features provided here.**
+# **Answer: I will recommand the same predicted price to the customers. These price seems reasonable according to the features provided here.
+# 
+# 2nd house has lower number of room, max LSTAT and more Student-teacher ratio -> Lower price as pridicted by my model.
+# 3rd house has opposite features than 1st house -> highest price should be there, as predicted by this model.
+# 1st house has 5 rooms lower than 3rd house but greater than 2nd house. Other feature statistics is also same. predicted price is reasonable. **
 
 # ### Sensitivity
 # An optimal model is not necessarily a robust model. Sometimes, a model is either too complex or too simple to sufficiently generalize to new data. Sometimes, a model could use a learning algorithm that is not appropriate for the structure of the data given. Other times, the data itself could be too noisy or contain too few samples to allow a model to adequately capture the target variable — i.e., the model is underfitted. Run the code cell below to run the `fit_model` function ten times with different training and testing sets to see how the prediction for a specific client changes with the data it's trained on.
 
-# In[67]:
+# In[20]:
 
 vs.PredictTrials(features, prices, fit_model, client_data)
 
@@ -343,5 +373,5 @@ vs.PredictTrials(features, prices, fit_model, client_data)
 
 # **Answer: Price should be adjusted for market inflation.
 #           Yes, data is sufficient to describe the home but more relevent features should help predict better like furnising of house, locality, distance from main city etc...
-#           Need more relevent data to make less standard deviation
+#           Need more relevent data to make less standard deviation and for underfited model
 #           No, rural area may have different requirements and diffrent features. **
