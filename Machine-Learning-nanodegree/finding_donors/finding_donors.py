@@ -20,7 +20,7 @@ In addition to implementing code, there will be questions that you must answer w
 # ## Exploring the Data
 # Run the code cell below to load necessary Python libraries and load the census data. Note that the last column from this dataset, `'income'`, will be our target label (whether an individual makes more than, or at most, $50,000 annually). All other columns are features about each individual in the census database.
 
-# In[1]:
+# In[2]:
 
 # Import libraries necessary for this project
 import numpy as np
@@ -50,7 +50,7 @@ display(data.head(n=5))
 # 
 # **Hint:** You may need to look at the table above to understand how the `'income'` entries are formatted. 
 
-# In[2]:
+# In[5]:
 
 # TODO: Total number of records
 n_records = len(data)
@@ -71,7 +71,7 @@ print "Individuals making at most $50,000: {}".format(n_at_most_50k)
 print "Percentage of individuals making more than $50,000: {:.2f}%".format(greater_percent)
 
 
-# In[3]:
+# In[6]:
 
 import seaborn as sns
 sns.set(style="ticks", color_codes=True)
@@ -87,7 +87,7 @@ g = sns.pairplot(data)
 # 
 # Run the code cell below to plot a histogram of these two features. Note the range of the values present and how they are distributed.
 
-# In[3]:
+# In[7]:
 
 # Split the data into features and target label
 income_raw = data['income']
@@ -101,7 +101,7 @@ vs.distribution(data)
 # 
 # Run the code cell below to perform a transformation on the data and visualize the results. Again, note the range of values and how they are distributed. 
 
-# In[4]:
+# In[8]:
 
 # Log-transform the skewed features
 skewed = ['capital-gain', 'capital-loss']
@@ -116,7 +116,7 @@ vs.distribution(features_raw, transformed = True)
 # 
 # Run the code cell below to normalize each numerical feature. We will use [`sklearn.preprocessing.MinMaxScaler`](http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html) for this.
 
-# In[5]:
+# In[9]:
 
 # Import sklearn.preprocessing.StandardScaler
 from sklearn.preprocessing import MinMaxScaler
@@ -145,7 +145,7 @@ display(features_raw.head(n = 5))
 #  - Convert the target label `'income_raw'` to numerical entries.
 #    - Set records with "<=50K" to `0` and records with ">50K" to `1`.
 
-# In[6]:
+# In[10]:
 
 from pandas import get_dummies
 
@@ -154,6 +154,8 @@ features = get_dummies(features_raw)
 
 # TODO: Encode the 'income_raw' data to numerical values
 income = income_raw.apply(lambda x: 1 if x == '>50K' else 0)
+''' Or can use below code too instead of .apply function '''
+# income = get_dummies(income_raw)['>50K']
 
 # Print the number of features after one-hot encoding
 encoded = list(features.columns)
@@ -168,7 +170,7 @@ print encoded
 # 
 # Run the code cell below to perform this split.
 
-# In[8]:
+# In[12]:
 
 # Import train_test_split
 from sklearn.cross_validation import train_test_split
@@ -198,7 +200,7 @@ print "Testing set has {} samples.".format(X_test.shape[0])
 # *If we chose a model that always predicted an individual made more than \$50,000, what would that model's accuracy and F-score be on this dataset?*  
 # **Note:** You must use the code cell below and assign your results to `'accuracy'` and `'fscore'` to be used later.
 
-# In[9]:
+# In[13]:
 
 # TODO: Calculate accuracy
 
@@ -265,7 +267,7 @@ print "Naive Predictor: [Accuracy score: {:.4f}, F-score: {:.4f}]".format(accura
 #  - Calculate the F-score for both the training subset and testing set.
 #    - Make sure that you set the `beta` parameter!
 
-# In[10]:
+# In[14]:
 
 # TODO: Import two metrics from sklearn - fbeta_score and accuracy_score
 from sklearn.metrics import fbeta_score, accuracy_score
@@ -286,12 +288,12 @@ def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
     
     results = {}
     
-    X_train = X_train[:sample_size]
-    y_train = y_train[:sample_size]
+    # X_train = X_train[:sample_size]
+    # y_train = y_train[:sample_size]
     
     # TODO: Fit the learner to the training data using slicing with 'sample_size'
     start = time() # Get start time
-    learner.fit(X_train, y_train)
+    learner.fit(X_train[:sample_size], y_train[:sample_size])
     end = time() # Get end time
     
     # TODO: Calculate the training time
@@ -301,23 +303,23 @@ def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
     #       then get predictions on the first 300 training samples
     start = time() # Get start time
     predictions_test = learner.predict(X_test)
-    predictions_train = learner.predict(X_train)
+    predictions_train = learner.predict(X_train[:300])
     end = time() # Get end time
     
     # TODO: Calculate the total prediction time
     results['pred_time'] = end - start
             
     # TODO: Compute accuracy on the first 300 training samples
-    results['acc_train'] = accuracy_score(predictions_train, y_train)
+    results['acc_train'] = accuracy_score(y_train[:300], predictions_train)
         
     # TODO: Compute accuracy on test set
-    results['acc_test'] = accuracy_score(predictions_test, y_test)
+    results['acc_test'] = accuracy_score(y_test, predictions_test)
     
     # TODO: Compute F-score on the the first 300 training samples
-    results['f_train'] = fbeta_score(predictions_train, y_train,  beta = beta)
+    results['f_train'] = fbeta_score(y_train[:300], predictions_train,  beta = beta)
         
     # TODO: Compute F-score on the test set
-    results['f_test'] = fbeta_score(predictions_test, y_test, beta = beta)
+    results['f_test'] = fbeta_score(y_test, predictions_test, beta = beta)
        
     # Success
     print "{} trained on {} samples.".format(learner.__class__.__name__, sample_size)
@@ -337,7 +339,7 @@ def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
 # 
 # **Note:** Depending on which algorithms you chose, the following implementation may take some time to run!
 
-# In[11]:
+# In[18]:
 
 # TODO: Import the three supervised learning models from sklearn
 from sklearn.linear_model import LogisticRegression, SGDClassifier
@@ -366,6 +368,11 @@ for clf in [clf_A, clf_B, clf_C]:
     results[clf_name] = {}
     for i, samples in enumerate([samples_1, samples_10, samples_100]):
         results[clf_name][i] =         train_predict(clf, samples, X_train, y_train, X_test, y_test)
+
+        
+for i in results.items():
+    print i[0]
+    display(pd.DataFrame(i[1]).rename(columns={0:'1%', 1:'10%', 2:'100%'}))
 
 # Run metrics visualization for the three supervised learning models chosen
 vs.evaluate(results, accuracy, fscore)
@@ -397,7 +404,12 @@ vs.evaluate(results, accuracy, fscore)
 # 1 = you are absolutely sure that the person is going to be successful 5 years from now on
 # Any value above 0.5 = you are pretty sure about that person succeeding. Say you predict 0.8, then you are 80% confident that the person will succeed. Likewise, any value below 0.5 you can say with a corresponding degree of confidence that the person will not succeed.
 # 
-# Logistic Regression multiplies each input by a coefficient, sums them up, and adds a constant.If the function output is large enough, then the classifier would positively relate it with a certain label.
+# How Logistic Regression works:
+# 1) It first multiplies features with weights and add them up, then a function is applied to the sum of these. If the function output is that large, then the classifier would positively relate it with a given certain label.
+# 
+# 2) There is an objective score to measure how the classifier performs. During training, the predictions are compared to true labels to provide feedback, then the weights are updated in order to get a better score in following predictions.
+# 
+# 3) For prediction, it applies the weights, multiplication, summation, and function to the testing sample to get the final prediction.
 # ** 
 
 # ### Implementation: Model Tuning
@@ -414,7 +426,7 @@ vs.evaluate(results, accuracy, fscore)
 # 
 # **Note:** Depending on the algorithm chosen and the parameter list, the following implementation may take some time to run!
 
-# In[12]:
+# In[16]:
 
 # TODO: Import 'GridSearchCV', 'make_scorer', and any other necessary libraries
 from sklearn.model_selection import GridSearchCV
@@ -441,6 +453,9 @@ grid_fit = grid_obj.fit(X_train, y_train)
 
 # Get the estimator
 best_clf = grid_fit.best_estimator_
+
+# Get optimized parameters of clf
+print best_clf
 
 # Make predictions using the unoptimized and model
 predictions = (clf.fit(X_train, y_train)).predict(X_test)
@@ -488,6 +503,24 @@ print "Final F-score on the testing data: {:.4f}".format(fbeta_score(y_test, bes
 # Occupation is rank one as people earn by the work they are doing. capital-gain and capital-loss is numrical data related to earning so it affact people's income. education and Age comes to last as i found their significant little less on income.
 # **
 
+# In[17]:
+
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Compute confusion matrix for a model
+model = best_clf
+cm = confusion_matrix(y_test, model.predict(X_test))
+cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] # normalize the data
+
+# view with a heatmap
+sns.heatmap(cm, annot=True, cmap='Blues', square=True, fmt='.4f')
+plt.ylabel('True label')
+plt.xlabel('Predicted label')
+plt.title('Confusion matrix for:\n{}'.format(model.__class__.__name__));
+
+
 # ### Implementation - Extracting Feature Importance
 # Choose a `scikit-learn` supervised learning algorithm that has a `feature_importance_` attribute availble for it. This attribute is a function that ranks the importance of each feature when making predictions based on the chosen algorithm.
 # 
@@ -526,16 +559,6 @@ vs.feature_plot(importances, X_train, y_train)
 # 
 # As expected capital-gain and capital-loss is on top of feature selection list. and age, education also matters for income prediction.
 # **
-
-# In[ ]:
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-for var in ['capital-gain', 'capital-loss', 'relationship', 'age', 'education-num', 'occupation']:
-    sns.swarmplot(x=data[var], y=income, data=tips)
-    plt.show()
-
 
 # ### Feature Selection
 # How does a model perform if we only use a subset of all the available features in the data? With less features required to train, the expectation is that training and prediction time is much lower — at the cost of performance metrics. From the visualization above, we see that the top five most important features contribute more than half of the importance of **all** features present in the data. This hints that we can attempt to *reduce the feature space* and simplify the information required for the model to learn. The code cell below will use the same optimized model you found earlier, and train it on the same training set *with only the top five important features*. 
